@@ -18,18 +18,6 @@
 echo "Updating resolv.conf"
 echo "nameserver 8.8.4.4 >> /etc/resolv.conf"
 
-echo "Adding neutron interface for the host"
-tee -a /etc/network/interfaces << EOF
-
-#OVERLAY/NEUTRON
-auto bond0.45
-iface bond0.45 inet static
-address 10.0.102.41
-netmask 255.255.255.0
-vlan-raw-device bond0
-mtu 9000
-EOF
-
 echo "Updating Time Zone"
 timedatectl set-timezone UTC
 
@@ -39,11 +27,19 @@ mkdir -p /root/deploy && cd "$_"
 git clone https://git.openstack.org/openstack/airship-in-a-bottle
 cd airship-in-a-bottle/
 git checkout 4e57ac85533b0a0962d567f344eb0a9c6150889f
-sed -i -e 's/virt_type:.*$/virt_type: kvm/g' ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/nova.yaml
-sed -i -e 's/tunnel: docker0$/tunnel: docker0\n      auto_bridge_add:\n        br-ex: bond0/g' \
-    -e 's/flat_networks: public$/flat_networks: public\n          ml2_type_vlan:\n            network_vlan_ranges: physnet:46:300/g' \
-    ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/neutron.yaml
-sed -i '0,/public:br-ex/s/public:br-ex/physnet:br-ex/' ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/neutron.yaml
+#sed -i -e 's/virt_type:.*$/virt_type: kvm/g' ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/nova.yaml
+#sed -i -e 's/tunnel: docker0$/tunnel: docker0\n      auto_bridge_add:\n        br-ex: bond0/g' \
+#    -e 's/flat_networks: public$/flat_networks: public\n          ml2_type_vlan:\n            network_vlan_ranges: physnet:46:300/g' \
+#    ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/neutron.yaml
+#sed -i '0,/public:br-ex/s/public:br-ex/physnet:br-ex/' ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/neutron.yaml
 
 cd manifests/dev_single_node
 ./airship-in-a-bottle.sh  -y -y
+
+###   checking status ######
+pods = kubectl get pods -n openstack |wc -l
+if [ $pods -gt 70 ];
+then
+    echo "Deployed: Please login to environment to validate further"
+    exit 0
+fi
