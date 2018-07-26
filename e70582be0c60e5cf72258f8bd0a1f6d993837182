@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "02dd6cf9_c8d980e7",
+        "filename": "akraino_airship_deploy.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 45
+      },
+      "writtenOn": "2018-07-26T18:00:09Z",
+      "side": 1,
+      "message": "This isn\u0027t going to work.  You need to enclose the shell pipeline in ` quotes or $( )",
+      "revId": "e70582be0c60e5cf72258f8bd0a1f6d993837182",
+      "serverId": "4cada01b-0314-4fe0-84a1-f9ddc89863f9",
+      "unresolved": false
+    }
+  ]
+}
