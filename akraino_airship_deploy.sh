@@ -37,7 +37,7 @@ cd manifests/dev_single_node
 ./airship-in-a-bottle.sh  -y -y
 
 ###   checking status ######
-pods = kubectl get pods -n openstack |wc -l
+pods=$(kubectl get pods -n openstack |wc -l)
 if [ $pods -gt 70 ];
 then
     echo "Deployed: Please login to environment to validate further"
