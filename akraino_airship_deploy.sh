@@ -48,6 +48,8 @@ if [ $pods -gt 75 ]; then
 
         ~/deploy/airship-in-a-bottle/manifests/dev_single_node/run_openstack_cli.sh quota set --cores $CPU --ram $MEM admin
         ~/deploy/airship-in-a-bottle/manifests/dev_single_node/run_openstack_cli.sh quota show admin
+        ~/deploy/airship-in-a-bottle/manifests/dev_single_node/run_openstack_cli.sh subnet set --dhcp --dns-nameserver 8.8.8.8 public
+        ~/deploy/airship-in-a-bottle/manifests/dev_single_node/run_openstack_cli.sh subnet show public
         set +x
         echo "Environment Deployed: Please login to environment to validate further"
         exit 0
