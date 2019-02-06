@@ -34,9 +34,13 @@ cd airship-in-a-bottle/
 git checkout 3ebe9bd8a05bb8095f5cdc53a746219e069bb40d
 
 sed -i -e 's/virt_type:.*$/virt_type: kvm/g' ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/nova.yaml
-sed -i -e 's#PROMENADE_IMAGE=.*$#PROMENADE_IMAGE=${PROMENADE_IMAGE:-"quay.io/airshipit/promenade@sha256:ff1c58e1d40d8b729b573921b492c44a12bbef92ba53ce8b56eb132ab3d66d02"}#g' ~/deploy/airship-in-a-bottle/manifests/common/deploy-airship.sh
+#sed -i -e 's#PROMENADE_IMAGE=.*$#PROMENADE_IMAGE=${PROMENADE_IMAGE:-"quay.io/airshipit/promenade@sha256:ff1c58e1d40d8b729b573921b492c44a12bbef92ba53ce8b56eb132ab3d66d02"}#g' ~/deploy/airship-in-a-bottle/manifests/common/deploy-airship.sh
 
 cd manifests/dev_single_node
+sed -i -e 's/curl/#curl/g' test_create_heat_stack.sh
+curl -LO https://raw.githubusercontent.com/openstack/openstack-helm/master/tools/gate/files/heat-basic-vm-deployment.yaml
+curl -LO https://raw.githubusercontent.com/openstack/openstack-helm/master/tools/gate/files/heat-public-net-deployment.yaml
+sed -i -e 's/enable_dhcp: .*$/enable_dhcp: true/g' -e 's/10.96.0.10/8.8.8.8/g' heat-public-net-deployment.yaml
 ./airship-in-a-bottle.sh  -y -y
 set +x
 
