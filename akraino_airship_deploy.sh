@@ -31,7 +31,7 @@ set -x
 mkdir -p /root/deploy && cd "$_"
 git clone https://git.openstack.org/openstack/airship-in-a-bottle
 cd airship-in-a-bottle/
-git checkout 3ebe9bd8a05bb8095f5cdc53a746219e069bb40d
+git checkout 5613857adebf4b063f4e01ceaaee17fb62e50e3d
 
 sed -i -e 's/virt_type:.*$/virt_type: kvm/g' ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/nova.yaml
 #sed -i -e 's#PROMENADE_IMAGE=.*$#PROMENADE_IMAGE=${PROMENADE_IMAGE:-"quay.io/airshipit/promenade@sha256:ff1c58e1d40d8b729b573921b492c44a12bbef92ba53ce8b56eb132ab3d66d02"}#g' ~/deploy/airship-in-a-bottle/manifests/common/deploy-airship.sh
