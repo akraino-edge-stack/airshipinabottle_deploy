@@ -25,6 +25,10 @@ echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 echo "Updating Time Zone"
 timedatectl set-timezone UTC
 
+echo "Setup Docker and load any staged images"
+apt -y install --no-install-recommends docker.io
+for i in `ls /opt/images/img*.tar`; do echo "loading image $i"; docker load -i $i ; done
+
 echo "Now we are starting to deploy airship"
 sleep 3
 set -x

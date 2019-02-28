@@ -1,0 +1,7 @@
+The akraino_airship_deploy.sh script will attempt to load
+any images in this directory matching the filename pattern
+of "img*.tar"
+
+These would be images that were saved using a command like:
+  docker save -o img00001.tar repo:tag
+
