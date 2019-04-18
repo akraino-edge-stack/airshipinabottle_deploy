@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2018-2019 AT&T Intellectual Property. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 # SETUP LOGGING
-MYLOGFILE="`basename $0`-`date -Im`.log"
+MYLOGFILE="$(basename $0|cut -d. -f1)_$(date +'%FT%H-%M-%S%z').log"
 exec 1> >(tee -a "$MYLOGFILE") 2>&1
 echo "Logging to $MYLOGFILE"
 
@@ -36,6 +36,7 @@ mkdir -p /root/deploy && cd "$_"
 git clone https://git.openstack.org/openstack/airship-in-a-bottle
 cd airship-in-a-bottle/
 git checkout 5613857adebf4b063f4e01ceaaee17fb62e50e3d
+export PROMENADE_IMAGE="quay.io/airshipit/promenade:66ab47386f5a5a41746ec32fc3bc166079e79b43"
 
 sed -i -e 's/virt_type:.*$/virt_type: kvm/g' ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/nova.yaml
 
@@ -50,6 +51,10 @@ export max_shipyard_count=${max_shipyard_count:-30}
 export shipyard_query_time=${shipyard_query_time:-120}
 
 ./airship-in-a-bottle.sh  -y -y
+./test_create_heat_stack.sh
+
+# add script to run openstack cli commands from container
+cp /opt/akraino/run_openstack_cli.sh /usr/local/bin/openstack
 set +x
 
 pods=$(kubectl get pods -n openstack |wc -l)
