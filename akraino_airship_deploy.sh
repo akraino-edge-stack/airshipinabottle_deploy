@@ -54,7 +54,7 @@ export shipyard_query_time=${shipyard_query_time:-120}
 ./test_create_heat_stack.sh
 
 # add script to run openstack cli commands from container
-cp /opt/akraino/run_openstack_cli.sh /usr/local/bin/openstack
+cp /opt/run_openstack_cli.sh /usr/local/bin/openstack
 set +x
 
 pods=$(kubectl get pods -n openstack |wc -l)
