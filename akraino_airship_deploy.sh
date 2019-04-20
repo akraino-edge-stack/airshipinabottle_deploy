@@ -33,12 +33,13 @@ echo "Now we are starting to deploy airship"
 sleep 3
 set -x
 mkdir -p /root/deploy && cd "$_"
-git clone https://git.openstack.org/openstack/airship-in-a-bottle
-cd airship-in-a-bottle/
+#git clone https://git.openstack.org/openstack/airship-in-a-bottle
+git clone https://opendev.org/airship/in-a-bottle.git
+cd in-a-bottle/
 git checkout 5613857adebf4b063f4e01ceaaee17fb62e50e3d
 export PROMENADE_IMAGE="quay.io/airshipit/promenade:66ab47386f5a5a41746ec32fc3bc166079e79b43"
 
-sed -i -e 's/virt_type:.*$/virt_type: kvm/g' ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/nova.yaml
+sed -i -e 's/virt_type:.*$/virt_type: kvm/g' ~/deploy/in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/nova.yaml
 
 cd manifests/dev_single_node
 sed -i -e 's/curl/#curl/g' test_create_heat_stack.sh
@@ -63,10 +64,10 @@ if [ $pods -gt 75 ]; then
         CPU=$[$(grep -c ^processor /proc/cpuinfo)/2]
         MEM=$[$(grep MemTotal /proc/meminfo | awk '{print $2;}')/1024/2]
 
-        ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh quota set --cores $CPU --ram $MEM admin
-        ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh quota show admin
-        ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh subnet set --dhcp --dns-nameserver 8.8.8.8 public
-        ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh subnet show public
+        openstack quota set --cores $CPU --ram $MEM admin
+        openstack quota show admin
+        openstack subnet set --dhcp --dns-nameserver 8.8.8.8 public
+        openstack subnet show public
         set +x
         echo "Environment Deployed: Please login to environment to validate further"
         exit 0
