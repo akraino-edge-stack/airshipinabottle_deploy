@@ -29,6 +29,9 @@ echo "Setup Docker and load any staged images"
 apt -y install --no-install-recommends docker.io
 for i in `ls /opt/images/img*.tar`; do echo "loading image $i"; docker load -i $i ; done
 
+echo "Make iptables rules persistent"
+apt -y install iptables-persistent
+
 echo "Now we are starting to deploy airship"
 sleep 3
 set -x
@@ -60,8 +63,8 @@ set +x
 pods=$(kubectl get pods -n openstack |wc -l)
 if [ $pods -gt 75 ]; then
         set -x
-        CPU=$[$(grep -c ^processor /proc/cpuinfo)/2]
-        MEM=$[$(grep MemTotal /proc/meminfo | awk '{print $2;}')/1024/2]
+        CPU=$[$(grep -c ^processor /proc/cpuinfo)*3/4]
+        MEM=$[$(grep MemTotal /proc/meminfo | awk '{print $2;}')/1024*3/4]
 
         ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh quota set --cores $CPU --ram $MEM admin
         ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh quota show admin
