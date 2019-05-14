@@ -29,9 +29,6 @@ echo "Setup Docker and load any staged images"
 apt -y install --no-install-recommends docker.io
 for i in `ls /opt/images/img*.tar`; do echo "loading image $i"; docker load -i $i ; done
 
-echo "Make iptables rules persistent"
-apt -y install iptables-persistent
-
 echo "Now we are starting to deploy airship"
 sleep 3
 set -x
@@ -55,6 +52,11 @@ export shipyard_query_time=${shipyard_query_time:-120}
 
 ./airship-in-a-bottle.sh  -y -y
 ./test_create_heat_stack.sh
+
+echo "Make iptables rules persistent"
+echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+apt-get -y install iptables-persistent
 
 # add script to run openstack cli commands from container
 cp /opt/run_openstack_cli.sh /usr/local/bin/openstack
