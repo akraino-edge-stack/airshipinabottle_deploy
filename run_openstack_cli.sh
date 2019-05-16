@@ -22,7 +22,7 @@ NAMESPACE="${NAMESPACE:-openstack}"
 
 # Define Base Docker Command
 base_docker_command=$(cat << EndOfCommand
-sudo docker run -t --rm --net=host
+sudo docker run -it --rm --net=host
 -e http_proxy=${HTTP_PROXY}
 -e https_proxy=${HTTPS_PROXY}
 -e OS_AUTH_URL=${OS_AUTH_URL:-http://keystone.${NAMESPACE}.svc.cluster.local:80/v3}
