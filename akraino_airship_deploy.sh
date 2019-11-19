@@ -27,28 +27,18 @@ timedatectl set-timezone UTC
 
 echo "Setup Docker and load any staged images"
 apt -y install --no-install-recommends docker.io
-for i in `ls /opt/images/img*.tar`; do echo "loading image $i"; docker load -i $i ; done
 
 echo "Now we are starting to deploy airship"
 sleep 3
 set -x
+rm -rf /root/deploy
 mkdir -p /root/deploy && cd "$_"
-git clone https://git.openstack.org/openstack/airship-in-a-bottle
-cd airship-in-a-bottle/
-git checkout 5613857adebf4b063f4e01ceaaee17fb62e50e3d
-export PROMENADE_IMAGE="quay.io/airshipit/promenade:66ab47386f5a5a41746ec32fc3bc166079e79b43"
+git clone https://opendev.org/airship/treasuremap/
+cd /root/deploy/treasuremap/tools/deployment/aiab/
+git checkout tags/v1.3
 
-sed -i -e 's/virt_type:.*$/virt_type: kvm/g' ~/deploy/airship-in-a-bottle/deployment_files/global/v1.0demo/software/charts/osh/compute-kit/nova.yaml
-
-cd manifests/dev_single_node
-sed -i -e 's/curl/#curl/g' test_create_heat_stack.sh
-curl -LO https://raw.githubusercontent.com/openstack/openstack-helm/master/tools/gate/files/heat-basic-vm-deployment.yaml
-curl -LO https://raw.githubusercontent.com/openstack/openstack-helm/master/tools/gate/files/heat-public-net-deployment.yaml
-sed -i -e 's/enable_dhcp: .*$/enable_dhcp: true/g' -e 's/10.96.0.10/8.8.8.8/g' heat-public-net-deployment.yaml
-
-# reduce frequency of shipyard status checks
-export max_shipyard_count=${max_shipyard_count:-30}
-export shipyard_query_time=${shipyard_query_time:-120}
+# use kvm instead of qemu for virtualization
+sed -i -e 's/virt_type:.*$/virt_type: kvm/g' /root/deploy/treasuremap/site/aiab/software/charts/osh/openstack-compute-kit/nova.yaml
 
 ./airship-in-a-bottle.sh  -y -y
 ./test_create_heat_stack.sh
