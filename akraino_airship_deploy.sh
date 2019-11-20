@@ -41,7 +41,7 @@ git checkout tags/v1.3
 sed -i -e 's/virt_type:.*$/virt_type: kvm/g' /root/deploy/treasuremap/site/aiab/software/charts/osh/openstack-compute-kit/nova.yaml
 
 ./airship-in-a-bottle.sh  -y -y
-./test_create_heat_stack.sh
+#./test_create_heat_stack.sh
 
 echo "Make iptables rules persistent"
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
@@ -58,10 +58,10 @@ if [ $pods -gt 75 ]; then
         CPU=$[$(grep -c ^processor /proc/cpuinfo)*3/4]
         MEM=$[$(grep MemTotal /proc/meminfo | awk '{print $2;}')/1024*3/4]
 
-        ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh quota set --cores $CPU --ram $MEM admin
-        ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh quota show admin
-        ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh subnet set --dhcp --dns-nameserver 8.8.8.8 public
-        ~/deploy/airship-in-a-bottle/tools/run_openstack_cli.sh subnet show public
+        openstack quota set --cores $CPU --ram $MEM admin
+        openstack quota show admin
+        openstack subnet set --dhcp --dns-nameserver 8.8.8.8 public
+        openstack subnet show public
         set +x
         echo "Environment Deployed: Please login to environment to validate further"
         exit 0
