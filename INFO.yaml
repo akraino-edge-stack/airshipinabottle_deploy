@@ -1,0 +1,58 @@
+---
+project: 'airshipinabottle_deploy'
+project_creation_date: '2019-12-16'
+project_category: ''
+lifecycle_state: 'Incubation'
+project_lead: &akraino_airshipinabottle_deploy_ptl
+    name: ''
+    email: ''
+    id: ''
+    company: ''
+    timezone: ''
+primary_contact: *akraino_airshipinabottle_deploy_ptl
+issue_tracking:
+    type: 'jira'
+    url: 'https://jira.akraino.org/projects/'
+    key: 'airshipinabottle_deploy'
+mailing_list:
+    type: 'groups.io'
+    url: 'technical-discuss@lists.akraino.org'
+    tag: '[]'
+realtime_discussion:
+    type: 'irc'
+    server: 'freenode.net'
+    channel: '#akraino'
+meetings:
+    - type: 'gotomeeting+irc'
+      agenda: 'https://wiki.akraino.org/display/'
+      url: ''
+      server: 'freenode.net'
+      channel: '#akraino'
+      repeats: ''
+      time: ''
+repositories:
+    - airshipinabottle_deploy
+committers:
+    - <<: *akraino_airshipinabottle_deploy_ptl
+    - name: 'Robert Eby'
+      email: 're2429@att.com'
+      company: 'att'
+      id: 'RobertEby'
+      timezone: 'Unknown/Unknown'
+    - name: 'David Plunkett'
+      email: 'dp7642@att.com'
+      company: 'att'
+      id: 'davidplunkett'
+      timezone: 'Unknown/Unknown'
+    - name: 'Suman Saha'
+      email: 'ss769u@att.com'
+      company: 'att'
+      id: 'ss769u'
+      timezone: 'Unknown/Unknown'
+tsc:
+    # yamllint disable rule:line-length
+    approval: 'missing'
+    changes:
+        - type: ''
+          name: ''
+          link: ''
