@@ -1,4 +1,5 @@
 # UUID                                                                                     	Group Name
 #
 0706f97cf3b2243094a8f24452092769b1065db0                                                   	GitHub Replication
+984c8b9ede02cb66d9e0eddb77abff0741d03f8a                                                   	saml/akraino-gerrit-airshipinabottle_deploy-committers
 ldap:cn=akraino-gerrit-airshipinabottle_deploy-committers,ou=Groups,dc=freestandards,dc=org	ldap/akraino-gerrit-airshipinabottle_deploy-committers
